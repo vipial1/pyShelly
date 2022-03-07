@@ -51,6 +51,7 @@ class Switch(Device):
         self.kg_send_event_click_count = 0
         self.kg_start_state = None
         self.kg_momentary_button = False
+        self.kg_click_error = False
 
     def kg_send_event(self):
         if self.kg_click_error:
@@ -193,7 +194,7 @@ class Switch(Device):
             self.event_cnt = event_cnt
         if not state is None:
             state = bool(state)
-        self._update(src, state, {'last_event' : self.last_event,
+        self._update(SRC_COAP, state, {'last_event' : self.last_event,
                                   'event_cnt' : self.event_cnt})
 
     def rpc_event(self, comp, type):
@@ -217,14 +218,6 @@ class Switch(Device):
             event = data["event"]
             event_cnt = data["event_cnt"]
             self._update(None, event_cnt, event, SRC_MQTT)
-
-    def update_coap(self, payload):
-        """Get the power"""
-        state = self.coap_get(payload, self._position)
-        event_cnt = self.coap_get(payload, self._event_cnt_pos)
-        self.battery = self.coap_get(payload, [3112]) == 0
-        last_event = self.coap_get(payload, self._event_pos)
-        self._update(state, event_cnt, last_event, SRC_COAP)
 
     def update_status_information(self, status, src):
         """Update the status information."""
