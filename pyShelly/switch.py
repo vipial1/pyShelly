@@ -189,7 +189,7 @@ class Switch(Device):
                 state = 1
                 self.timer = Timer(1, self._turn_off)
                 self.timer.start()
-            self.last_event = last_event
+            self.last_event = self.coap_get(payload, self._event_pos)
             self.event_cnt = event_cnt
         if not state is None:
             state = bool(state)

@@ -196,7 +196,7 @@ class Block(Base):
             self._available = self.available()
             self.force_all_update()
 
-    def update_status_information(self):
+    def update_status_information(self, src=None):
         """Update the status information."""
         self.last_update_status_info = datetime.now()
         if self.mqtt_name:
