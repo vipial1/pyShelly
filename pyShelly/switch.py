@@ -206,18 +206,18 @@ class Switch(Device):
                 state = False
             #if type == "single_push":
         if state != None:
-            self._update(state, None, None, SRC_MQTT)
+            self._update(SRC_MQTT, state, None)
 
     def update_rpc(self, rpc_data):
         state = self._get_rpc_value({ATTR_RPC:'input:$/state'}, rpc_data)
-        self._update(state, None, None, SRC_MQTT)
+        self._update(SRC_MQTT, state, None)
 
     def update_mqtt(self, payload):
         if payload['topic'] == "input_event/" + str(self._channel):
             data = json.loads(payload['data'])
             event = data["event"]
             event_cnt = data["event_cnt"]
-            self._update(None, event_cnt, event, SRC_MQTT)
+            self._update(SRC_MQTT, event, event_cnt)
 
     def update_status_information(self, status, src):
         """Update the status information."""
